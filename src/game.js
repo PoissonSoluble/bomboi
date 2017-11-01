@@ -1,22 +1,21 @@
+let _SIZE = 19;
+let _GRID_CELL_SIZE = 100;
+
 class Game extends Phaser.Game {
 
     constructor() {
         let w, h;
-        /*const RESOLUTION = 800;
-        if(window.innerWidth > window.innerHeight) {
-            w = RESOLUTION*(window.innerWidth / window.innerHeight)
-            h = RESOLUTION
-        } else {
-            w = RESOLUTION
-            h = 800*(window.innerHeight / window.innerWidth)
-        }*/
-        w = 1900;
-        h = 1900;
+
+        w = Game.SIZE * 100;
+        h = Game.SIZE * 100;
         super(w, h, Phaser.AUTO, 'auto', null, null, false);
 
         this.state.add('boot', BootState, true);
         this.state.add('load', LoadState, false);
         this.state.add('play', PlayState, false);
     }
+
+    static get SIZE() { return _SIZE; }
+    static get GRID_CELL_SIZE() { return _GRID_CELL_SIZE; }
 
 }

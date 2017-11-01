@@ -5,32 +5,61 @@ class Explosion extends Phaser.Group {
 		this.game = game;
 		this.explosionFinished = false;
 
+		this.range = range;
 
-		let center = new ExplosionCenter(this.game, x, y);
-		let left = new ExplosionLeftEdge(this.game, x-(range*100), y);
-		let right = new ExplosionRightEdge(this.game, x+(range*100), y);
-		let down = new ExplosionDownEdge(this.game, x, y+(range*100));
-		let up = new ExplosionUpEdge(this.game, x, y-(range*100));
-
-		this.add(center);
-		this.add(left);
-		this.add(right);
-		this.add(down);
-		this.add(up);
-
-		for(var i = 1; i < range; i++){
-			let horizontalLeft = new ExplosionHorizontal(this.game, x-(i*100), y);
-			let horizontalRight = new ExplosionHorizontal(this.game, x+(i*100), y);
-			let verticalUp = new ExplosionVertical(this.game, x, y-(i*100));
-			let verticalDown = new ExplosionVertical(this.game, x, y+(i*100));
-
-			this.add(horizontalLeft);
-			this.add(horizontalRight);
-			this.add(verticalUp);
-			this.add(verticalDown);
-		}
+		this.createSprites(x, y);
 
 		this.interval = setInterval(Explosion.prototype.stopExplosion.bind(this), 1000);
+	}
+
+	createSprites(x, y){
+		let stopLeft = false;
+		let stopRight = false;
+		let stopDown = false;
+		let stopUp = false;
+
+		let center = new ExplosionCenter(this.game, x, y);
+
+		this.add(center);
+
+		for(var i = Game.GRID_CELL_SIZE; i < this.range*Game.GRID_CELL_SIZE; i+=Game.GRID_CELL_SIZE){
+			stopLeft = this.createIntermediarySprite(stopLeft, x-i, y, 1);
+			stopRight = this.createIntermediarySprite(stopRight, x+i, y, 1);
+			stopUp = this.createIntermediarySprite(stopUp, x, y-i, 2);
+			stopDown = this.createIntermediarySprite(stopDown, x, y+i, 2);
+		}
+
+		if(!stopLeft && !Walls.isWall(Utils.xyToGridPosition(x-(this.range*Game.GRID_CELL_SIZE)), Utils.xyToGridPosition(y))){
+			let left = new ExplosionLeftEdge(this.game, x-(this.range*Game.GRID_CELL_SIZE), y);
+			this.add(left);
+		}
+		if(!stopRight && !Walls.isWall(Utils.xyToGridPosition(x+(this.range*Game.GRID_CELL_SIZE)), Utils.xyToGridPosition(y))){
+			let right = new ExplosionRightEdge(this.game, x+(this.range*Game.GRID_CELL_SIZE), y);
+			this.add(right);
+		}
+		if(!stopDown && !Walls.isWall(Utils.xyToGridPosition(x), Utils.xyToGridPosition(y+(this.range*Game.GRID_CELL_SIZE)))) {
+			let down = new ExplosionDownEdge(this.game, x, y+(this.range*Game.GRID_CELL_SIZE));
+			this.add(down);
+		}
+		if(!stopUp && !Walls.isWall(Utils.xyToGridPosition(x), Utils.xyToGridPosition(y-(this.range*Game.GRID_CELL_SIZE)))) {
+			let up = new ExplosionUpEdge(this.game, x, y-(this.range*Game.GRID_CELL_SIZE));
+			this.add(up);
+		}
+	}
+
+	/**
+	 * Orientation -> 1 = horizontal
+	 *             -> 2 = vertical 
+	 */
+	createIntermediarySprite(stop, x, y, orientation){
+		if(!stop && !Walls.isWall(Utils.xyToGridPosition(x), Utils.xyToGridPosition(y))){
+			let sprite = orientation == 1 ? new ExplosionHorizontal(this.game, x, y) : new ExplosionVertical(this.game, x, y);
+			this.add(sprite);
+			return false
+		}
+		else{
+			return true;
+		}
 	}
 
 	isFinished(){
