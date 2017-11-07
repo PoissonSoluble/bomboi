@@ -5,7 +5,7 @@ class PlayState extends Phaser.State {
 		this.boulders = new Boulders(this.game);
 		this.bombs = new Bombs(this.game);
 		this.character = new Character(this.game, 0, this.bombs);
-		this.explosions = new Explosions(this.game);
+		this.explosions = new Explosions(this.game, this.boulders);
 		this.bombs.setExplosions(this.explosions);
 	}
 
@@ -18,6 +18,7 @@ class PlayState extends Phaser.State {
 	}
 
 	collisionExplosionBoulder(explosion, boulder){
-		boulder.kill();
+		this.boulders.remove(boulder);
+		//kill();
 	}
 }

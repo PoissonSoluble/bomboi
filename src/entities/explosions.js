@@ -1,15 +1,14 @@
 class Explosions extends Phaser.Group {
-	constructor(game){
+	constructor(game, boulders){
 		super(game);
+
+		this.boulders = boulders;
 
 		this.game.physics.arcade.enable(this);
 	}
 
 	addExplosion(x, y, range){
-		x = (Game.GRID_CELL_SIZE * Math.floor(x/Game.GRID_CELL_SIZE)) + (Game.GRID_CELL_SIZE/2);
-		y = (Game.GRID_CELL_SIZE * Math.floor(y/Game.GRID_CELL_SIZE)) + (Game.GRID_CELL_SIZE/2);
-
-		this.add(new Explosion(this.game, this.x, this.y, this.range));
+		this.add(new Explosion(this.game, x, y, range, this.boulders));
 	}
 
 	getAllChildren() {

@@ -2,8 +2,6 @@ class Bomb extends Phaser.Sprite {
 	constructor(game, x, y, range, explosions) {
 		super(game,  0, 0, "bomb");
 
-		//this.scale.setTo(0.25);
-
 		this.game = game;
 		this.anchor.setTo(0.5, 0.5);
 
@@ -36,7 +34,7 @@ class Bomb extends Phaser.Sprite {
 			this.kill();
 			this.hasExploded = false;
 			this.isExploding = true;
-			this.explosions.add(new Explosion(this.game, this.x, this.y, this.range));
+			this.explosions.addExplosion(this.x, this.y, this.range);
 		}
 	}
 }

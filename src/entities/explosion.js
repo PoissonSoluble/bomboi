@@ -1,11 +1,12 @@
 class Explosion extends Phaser.Group {
 
-	constructor(game, x, y, range) {
+	constructor(game, x, y, range, boulders) {
 		super(game);
 		this.game = game;
 		this.explosionFinished = false;
 
 		this.range = range;
+		this.boulders = boulders;
 
 		this.createSprites(x, y);
 
@@ -24,9 +25,9 @@ class Explosion extends Phaser.Group {
 
 		for(var i = Game.GRID_CELL_SIZE; i < this.range*Game.GRID_CELL_SIZE; i+=Game.GRID_CELL_SIZE){
 			stopLeft = this.createIntermediarySprite(stopLeft, x-i, y, 1);
-			stopRight = this.createIntermediarySprite(stopRight, x+i, y, 1);
-			stopUp = this.createIntermediarySprite(stopUp, x, y-i, 2);
-			stopDown = this.createIntermediarySprite(stopDown, x, y+i, 2);
+			stopRight = this.createIntermediarySprite(stopRight, x+i, y, 2);
+			stopUp = this.createIntermediarySprite(stopUp, x, y-i, 3);
+			stopDown = this.createIntermediarySprite(stopDown, x, y+i, 4);
 		}
 
 		if(!stopLeft && !Walls.isWall(Utils.xyToGridPosition(x-(this.range*Game.GRID_CELL_SIZE)), Utils.xyToGridPosition(y))){
@@ -48,12 +49,33 @@ class Explosion extends Phaser.Group {
 	}
 
 	/**
-	 * Orientation -> 1 = horizontal
-	 *             -> 2 = vertical 
+	 * Orientation -> 1 = left
+	 *             -> 2 = right
+	 *             -> 3 = up
+	 *             -> 4 = down 
 	 */
-	createIntermediarySprite(stop, x, y, orientation){
+	createIntermediarySprite(stop, x, y, direction){
+		let sprite;
+		if(!stop && this.boulders.isBoulder(x,y)){
+			switch(direction){
+				case 1:
+					sprite = new ExplosionLeftEdge(this.game, x, y);
+					break;
+				case 2:
+					sprite = new ExplosionRightEdge(this.game, x, y);
+					break;
+				case 3:
+					sprite = new ExplosionUpEdge(this.game, x, y);
+					break;
+				case 4:
+					sprite = new ExplosionDownEdge(this.game, x, y);
+					break;
+			}
+			this.add(sprite);
+			return true;
+		}
 		if(!stop && !Walls.isWall(Utils.xyToGridPosition(x), Utils.xyToGridPosition(y))){
-			let sprite = orientation == 1 ? new ExplosionHorizontal(this.game, x, y) : new ExplosionVertical(this.game, x, y);
+			sprite = direction == 1 || direction == 2 ? new ExplosionHorizontal(this.game, x, y) : new ExplosionVertical(this.game, x, y);
 			this.add(sprite);
 			return false
 		}
