@@ -71,17 +71,6 @@ class Explosion extends Phaser.Group {
 		clearInterval(this.interval);
 	}
 
-	collidesWith(x,y){
-		let collides = false;
-		this.forEach(function(item) {
-			if(item.collidesWith(x,y)){
-				collides = true;
-				return;
-			}
-		});
-		return collides;
-	}
-
 	update(){
 
 		if(this.explosionFinished){

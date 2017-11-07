@@ -1,6 +1,6 @@
 class Character extends Phaser.Sprite {
 
-	constructor(game, player, bombManager) {
+	constructor(game, player, bombs) {
 		super(game,  0, 0, "character");
 
 		this.game = game;
@@ -10,7 +10,7 @@ class Character extends Phaser.Sprite {
 		this.bombPosed = 0;
 
 		this.player = player;
-		this.bombManager = bombManager;
+		this.bombs = bombs;
 
 		this.game.physics.arcade.enable(this);
 
@@ -27,17 +27,6 @@ class Character extends Phaser.Sprite {
 		this.animations.add('up', [12, 13, 14, 15], 10, true);
 
 		this.game.add.existing(this);
-	}
-
-	bombTouches(x,y){
-		for(var i = 0; i < 100; i++) {
-			if(this.bombs[i] != null){
-				if(this.bombs[i].explosionCollidesWith(x,y)){
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	update(){
@@ -88,11 +77,11 @@ class Character extends Phaser.Sprite {
 
 		if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.timerBomb == 0)
 		{
-			this.bombManager.poseBomb(this.player, this.x, this.y, this.bombPosed, this.range)
+			this.bombs.addBomb(this.x, this.y, this.range);
 			this.timerBomb = 120;
 			this.bombPosed++;
 		}
 		
-		this.bombPosed -= this.bombManager.bombFinished(this.player);
+		//this.bombPosed -= this.bombManager.bombFinished(this.player);
 	}
 }

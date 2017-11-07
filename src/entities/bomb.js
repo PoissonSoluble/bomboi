@@ -1,5 +1,5 @@
 class Bomb extends Phaser.Sprite {
-	constructor(game, x, y, range) {
+	constructor(game, x, y, range, explosions) {
 		super(game,  0, 0, "bomb");
 
 		//this.scale.setTo(0.25);
@@ -7,6 +7,7 @@ class Bomb extends Phaser.Sprite {
 		this.game = game;
 		this.anchor.setTo(0.5, 0.5);
 
+		this.explosions = explosions;
 		this.hasExploded = false;
 		this.isExploding = false;
 
@@ -30,27 +31,12 @@ class Bomb extends Phaser.Sprite {
 		clearInterval(this.interval);
 	}
 
-	explosionCollidesWith(x,y){
-		if(this.explosion == null){
-			return false;
-		}
-		return this.explosion.collidesWith(x,y);
-	}
-
-	isFinished(){
-		if(this.explosion == null){
-			return false;
-		}
-
-		return this.explosion.isFinished();
-	}
-
 	update(){
 		if(this.hasExploded){
 			this.kill();
 			this.hasExploded = false;
 			this.isExploding = true;
-			this.explosion = new Explosion(this.game, this.x, this.y, this.range);
+			this.explosions.add(new Explosion(this.game, this.x, this.y, this.range));
 		}
 	}
 }

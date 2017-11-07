@@ -8,7 +8,7 @@ class Game extends Phaser.Game {
 
         w = Game.SIZE * 100;
         h = Game.SIZE * 100;
-        super(w, h, Phaser.AUTO, 'auto', null, null, false);
+        super(w, h, Phaser.CANVAS, 'auto', null, null, false);
 
         this.state.add('boot', BootState, true);
         this.state.add('load', LoadState, false);
