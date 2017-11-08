@@ -7,7 +7,9 @@ class Walls extends Phaser.Group {
 		for(var i = 0; i < Game.SIZE; i++){
 			for(var j = 0; j < Game.SIZE; j++){
 				if(Walls.isWall(i,j)){
-					let wall = new Phaser.Sprite(this.game, (this.game.width / 19) * i + 50, (this.game.height / 19) * j + 50, 'wall');
+					let x = (this.game.width / Game.SIZE) * i + (Game.GRID_CELL_SIZE/2);
+					let y = (this.game.height / Game.SIZE) * j + (Game.GRID_CELL_SIZE/2);
+					let wall = new Phaser.Sprite(this.game, x, y,'wall');
 					//wall.scale.setTo(.25);
 					wall.anchor.setTo(0.5,0.5)
 					this.game.physics.enable(wall, Phaser.Physics.ARCADE)

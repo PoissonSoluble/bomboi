@@ -13,6 +13,7 @@ class PlayState extends Phaser.State {
 		this.game.physics.arcade.collide(this.character, this.walls);
 		this.game.physics.arcade.collide(this.character, this.boulders);
 		this.game.physics.arcade.overlap(this.boulders, this.explosions.getAllChildren(), PlayState.prototype.collisionExplosionBoulder.bind(this));
+		this.game.physics.arcade.overlap(this.character, this.explosions.getAllChildren(), PlayState.prototype.collisionExplosionCharacter.bind(this));
 
 		this.character.update();
 	}
@@ -20,5 +21,9 @@ class PlayState extends Phaser.State {
 	collisionExplosionBoulder(explosion, boulder){
 		this.boulders.remove(boulder);
 		//kill();
+	}
+
+	collisionExplosionCharacter(){
+		this.character.kill();
 	}
 }
