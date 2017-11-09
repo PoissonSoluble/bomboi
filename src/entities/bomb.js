@@ -1,9 +1,11 @@
 class Bomb extends Phaser.Sprite {
-	constructor(game, x, y, range, explosions) {
+	constructor(game, x, y, range, character, explosions) {
 		super(game,  0, 0, "bomb");
 
 		this.game = game;
 		this.anchor.setTo(0.5, 0.5);
+
+		this.character = character;
 
 		this.explosions = explosions;
 		this.hasExploded = false;
@@ -26,6 +28,7 @@ class Bomb extends Phaser.Sprite {
 
 	explode(){
 		this.hasExploded = true;
+		this.character.freeBomb();
 		clearInterval(this.interval);
 	}
 

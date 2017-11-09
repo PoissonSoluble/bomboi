@@ -7,6 +7,8 @@ class Character extends Phaser.Sprite {
 
 		this.timerBomb = 0;
 
+		this.dead = false;
+
 		this.bombPosed = 0;
 
 		this.player = player;
@@ -19,7 +21,8 @@ class Character extends Phaser.Sprite {
 
         this.anchor.setTo(0.5, 0.5);
 
-        this.range = 2;
+        this.range = 1;
+        this.maxBombs = 1;
 
 		this.animations.add('down', [0, 1, 2, 3], 10, true);
 		this.animations.add('left', [8, 9, 10, 11], 10, true);
@@ -75,13 +78,24 @@ class Character extends Phaser.Sprite {
 			this.frame = 1;
 		}
 
-		if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.timerBomb == 0)
+		if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.bombPosed < this.maxBombs && this.timerBomb == 0)
 		{
-			this.bombs.addBomb(this.x, this.y, this.range);
+			this.bombs.addBomb(this.x, this.y, this.range, this);
 			this.timerBomb = 120;
 			this.bombPosed++;
 		}
-		
-		//this.bombPosed -= this.bombManager.bombFinished(this.player);
+	}
+
+	die(){
+		this.dead = true;
+		this.kill();
+	}
+
+	isDead(){
+		return this.dead;
+	}
+
+	freeBomb(){
+		this.bombPosed--;
 	}
 }
