@@ -9,8 +9,8 @@ class Bombs extends Phaser.Group {
 	}
 
 	addBomb(x, y, range, character){
-		x = (Game.GRID_CELL_SIZE * Math.floor(x/Game.GRID_CELL_SIZE)) + (Game.GRID_CELL_SIZE/2);
-		y = (Game.GRID_CELL_SIZE * Math.floor(y/Game.GRID_CELL_SIZE)) + (Game.GRID_CELL_SIZE/2);
+		x = (this.game.level.tilesize * Math.floor(x/this.game.level.tilesize)) + (this.game.level.tilesize/2);
+		y = (this.game.level.tilesize * Math.floor(y/this.game.level.tilesize)) + (this.game.level.tilesize/2);
 
 		this.add(new Bomb(this.game, x, y, range, character, this.explosions));
 	}

@@ -1,12 +1,13 @@
 class Explosion extends Phaser.Group {
 
-	constructor(game, x, y, range, boulders) {
+	constructor(game, x, y, range, boulders, walls) {
 		super(game);
 		this.game = game;
 		this.explosionFinished = false;
 
-		this.range = range;
+		this.range = range * this.game.level.tilesize;
 		this.boulders = boulders;
+		this.walls = walls;
 
 		this.createSprites(x, y);
 
@@ -23,27 +24,27 @@ class Explosion extends Phaser.Group {
 
 		this.add(center);
 
-		for(var i = Game.GRID_CELL_SIZE; i < this.range*Game.GRID_CELL_SIZE; i+=Game.GRID_CELL_SIZE){
+		for(var i = this.game.level.tilesize; i < this.range; i+=this.game.level.tilesize){
 			stopLeft = this.createIntermediarySprite(stopLeft, x-i, y, 1);
 			stopRight = this.createIntermediarySprite(stopRight, x+i, y, 2);
 			stopUp = this.createIntermediarySprite(stopUp, x, y-i, 3);
 			stopDown = this.createIntermediarySprite(stopDown, x, y+i, 4);
 		}
 
-		if(!stopLeft && !Walls.isWall(Utils.xyToGridPosition(x-(this.range*Game.GRID_CELL_SIZE)), Utils.xyToGridPosition(y))){
-			let left = new ExplosionLeftEdge(this.game, x-(this.range*Game.GRID_CELL_SIZE), y);
+		if(!stopLeft && !this.walls.isWall(x-(this.range), y)){
+			let left = new ExplosionLeftEdge(this.game, x-(this.range), y);
 			this.add(left);
 		}
-		if(!stopRight && !Walls.isWall(Utils.xyToGridPosition(x+(this.range*Game.GRID_CELL_SIZE)), Utils.xyToGridPosition(y))){
-			let right = new ExplosionRightEdge(this.game, x+(this.range*Game.GRID_CELL_SIZE), y);
+		if(!stopRight && !this.walls.isWall(x+(this.range), y)){
+			let right = new ExplosionRightEdge(this.game, x+(this.range), y);
 			this.add(right);
 		}
-		if(!stopDown && !Walls.isWall(Utils.xyToGridPosition(x), Utils.xyToGridPosition(y+(this.range*Game.GRID_CELL_SIZE)))) {
-			let down = new ExplosionDownEdge(this.game, x, y+(this.range*Game.GRID_CELL_SIZE));
+		if(!stopDown && !this.walls.isWall(x, y+(this.range))) {
+			let down = new ExplosionDownEdge(this.game, x, y+(this.range));
 			this.add(down);
 		}
-		if(!stopUp && !Walls.isWall(Utils.xyToGridPosition(x), Utils.xyToGridPosition(y-(this.range*Game.GRID_CELL_SIZE)))) {
-			let up = new ExplosionUpEdge(this.game, x, y-(this.range*Game.GRID_CELL_SIZE));
+		if(!stopUp && !this.walls.isWall(x, y-(this.range))) {
+			let up = new ExplosionUpEdge(this.game, x, y-(this.range));
 			this.add(up);
 		}
 	}
@@ -74,7 +75,7 @@ class Explosion extends Phaser.Group {
 			this.add(sprite);
 			return true;
 		}
-		if(!stop && !Walls.isWall(Utils.xyToGridPosition(x), Utils.xyToGridPosition(y))){
+		if(!stop && !this.walls.isWall(x, y)){
 			sprite = direction == 1 || direction == 2 ? new ExplosionHorizontal(this.game, x, y) : new ExplosionVertical(this.game, x, y);
 			this.add(sprite);
 			return false

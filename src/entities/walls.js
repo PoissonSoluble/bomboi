@@ -4,23 +4,33 @@ class Walls extends Phaser.Group {
 		super(game);
 		this.game = game;
 		this.enableBody = true;
-		for(var i = 0; i < Game.SIZE; i++){
-			for(var j = 0; j < Game.SIZE; j++){
-				if(Walls.isWall(i,j)){
-					let x = (this.game.width / Game.SIZE) * i + (Game.GRID_CELL_SIZE/2);
-					let y = (this.game.height / Game.SIZE) * j + (Game.GRID_CELL_SIZE/2);
+
+		for(var i = 0; i < this.game.level.width; i++){
+			for(var j = 0; j < this.game.level.height; j++){
+
+				let index = i * this.game.level.width + j;
+
+				if(this.game.level.data[index] == 1){
+
+					let x = (this.game.level.tilesize * i) + (this.game.level.tilesize / 2);
+					let y = (this.game.level.tilesize * j) + (this.game.level.tilesize / 2);
 					let wall = new Phaser.Sprite(this.game, x, y,'wall');
-					//wall.scale.setTo(.25);
-					wall.anchor.setTo(0.5,0.5)
+					wall.anchor.setTo(0.5)
 					this.game.physics.enable(wall, Phaser.Physics.ARCADE)
 					wall.body.immovable = true;
 					this.add(wall);
+
 				}
 			}
 		}
 	}
 
-	static isWall(i,j){
-		return (i == 0 || i == (Game.SIZE - 1) || j == 0 || j == (Game.SIZE - 1) || (i%2 == 0 && j%2 == 0))
+	isWall(x,y){
+		for(let wall of this.children){
+			if (wall.x == x && wall.y == y){
+				return true;
+			}
+		}
+		return false;
 	}
 }

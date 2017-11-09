@@ -1,13 +1,34 @@
 class Floor extends Phaser.Group {
+
 	constructor(game) {
 		super(game);
 		this.game = game;
-		for(var i = 0; i < 19; i++){
-			for(var j = 0; j < 19; j++){
-				let floor = new Phaser.Sprite(this.game, (this.game.width / 19) * i, (this.game.height / 19) *j, 'floor');
-				//floor.scale.setTo(.25);
-				this.add(floor);
+
+		for(var i = 0; i < this.game.level.width; i++){
+			for(var j = 0; j < this.game.level.height; j++){
+
+				let index = i * this.game.level.width + j;
+				if(this.game.level.data[index] == 2 || this.game.level.data[index] == 3){
+					let x = (this.game.level.tilesize * i) + (this.game.level.tilesize / 2);
+					let y = (this.game.level.tilesize * j) + (this.game.level.tilesize / 2);
+					let floor = new Phaser.Sprite(this.game, x, y, 'floor');
+					floor.anchor.set(0.5)
+					floor.boulderFree = this.game.level.data[index] == 3 ? true : false;
+					this.add(floor);
+				}
+
 			}
 		}
+
 	}
+
+	isBoulderFree(x,y){
+		for(let floor of this.children){
+			if (floor.x == x && floor.y == y){
+				return floor.boulderFree;
+			}
+		}
+		return true;
+	}
+
 }

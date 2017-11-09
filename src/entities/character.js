@@ -33,56 +33,58 @@ class Character extends Phaser.Sprite {
 	}
 
 	update(){
-		var cursors = this.game.input.keyboard.createCursorKeys();
-		//  Reset the thiss velocity (movement)
-		this.body.velocity.x = 0;
-		this.body.velocity.y = 0;
+		if(!this.dead){
+			var cursors = this.game.input.keyboard.createCursorKeys();
+			//  Reset the thiss velocity (movement)
+			this.body.velocity.x = 0;
+			this.body.velocity.y = 0;
 
-		if(this.timerBomb != 0){
-			this.timerBomb--;
-		}
+			if(this.timerBomb != 0){
+				this.timerBomb--;
+			}
 
-		if (cursors.left.isDown)
-		{
-			//  Move to the left
-			this.body.velocity.x = -150;
+			if (cursors.left.isDown)
+			{
+				//  Move to the left
+				this.body.velocity.x = -150;
 
-			this.animations.play('left');
-		}
-		else if (cursors.right.isDown)
-		{
-			//  Move to the right
-			this.body.velocity.x = 150;
+				this.animations.play('left');
+			}
+			else if (cursors.right.isDown)
+			{
+				//  Move to the right
+				this.body.velocity.x = 150;
 
-			this.animations.play('right');
-		}
-		else if (cursors.down.isDown)
-		{
-			//  Move to the right
-			this.body.velocity.y = 150;
+				this.animations.play('right');
+			}
+			else if (cursors.down.isDown)
+			{
+				//  Move to the right
+				this.body.velocity.y = 150;
 
-			this.animations.play('down');
-		}
-		else if (cursors.up.isDown)
-		{
-			//  Move to the right
-			this.body.velocity.y = -150;
+				this.animations.play('down');
+			}
+			else if (cursors.up.isDown)
+			{
+				//  Move to the right
+				this.body.velocity.y = -150;
 
-			this.animations.play('up');
-		}
-		else
-		{
-			//  Stand still
-			this.animations.stop();
+				this.animations.play('up');
+			}
+			else
+			{
+				//  Stand still
+				this.animations.stop();
 
-			this.frame = 1;
-		}
+				this.frame = 1;
+			}
 
-		if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.bombPosed < this.maxBombs && this.timerBomb == 0)
-		{
-			this.bombs.addBomb(this.x, this.y, this.range, this);
-			this.timerBomb = 120;
-			this.bombPosed++;
+			if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.bombPosed < this.maxBombs && this.timerBomb == 0)
+			{
+				this.bombs.addBomb(this.x, this.y, this.range, this);
+				this.timerBomb = 120;
+				this.bombPosed++;
+			}
 		}
 	}
 
