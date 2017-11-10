@@ -27,16 +27,18 @@ class Bomb extends Phaser.Sprite {
 	}
 
 	explode(){
-		this.hasExploded = true;
-		this.character.freeBomb();
-		clearInterval(this.interval);
+		if(!this.isExploding){
+			clearInterval(this.interval);
+			this.hasExploded = true;
+			this.character.freeBomb();
+		}
 	}
 
 	update(){
 		if(this.hasExploded){
-			this.kill();
 			this.hasExploded = false;
 			this.isExploding = true;
+			this.destroy();
 			this.explosions.addExplosion(this.x, this.y, this.range);
 		}
 	}

@@ -40,4 +40,13 @@ class PlayState extends Phaser.State {
 	collisionExplosionCharacter(){
 		this.character.die();
 	}
+
+
+	render(){
+		if(Game.DEBUG){
+			for(let explosion of this.explosions.getAllChildren())
+				this.game.debug.body(explosion);
+			this.game.debug.body(this.character)
+		}
+	}
 }

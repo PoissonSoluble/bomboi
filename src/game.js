@@ -1,4 +1,5 @@
 let _SIZE = 19;
+let _DEBUG = false;
 
 class Game extends Phaser.Game {
 
@@ -11,7 +12,8 @@ class Game extends Phaser.Game {
 
         this.level = level1;
 
-        this.bonusDropRate = 0.25;
+        this.bonusDropRate = 1;
+        this.initialSpeed = 150;
 
         this.state.add('boot', BootState, true);
         this.state.add('load', LoadState, false);
@@ -19,5 +21,6 @@ class Game extends Phaser.Game {
     }
 
     static get SIZE() { return _SIZE; }
+    static get DEBUG() { return _DEBUG; }
 
 }

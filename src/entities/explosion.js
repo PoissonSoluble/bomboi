@@ -95,7 +95,6 @@ class Explosion extends Phaser.Group {
 	}
 
 	update(){
-
 		if(this.explosionFinished){
 			this.destroy();
 		}

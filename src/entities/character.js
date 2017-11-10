@@ -5,8 +5,6 @@ class Character extends Phaser.Sprite {
 
 		this.game = game;
 
-		this.timerBomb = 0;
-
 		this.dead = false;
 
 		this.bombPosed = 0;
@@ -15,9 +13,12 @@ class Character extends Phaser.Sprite {
 		this.bombs = bombs;
 
 		this.game.physics.arcade.enable(this);
+		this.body.setSize(66,81.5,1,3);
 
 		this.x = 150; 
 		this.y = 150; 
+
+		this.speed = this.game.initialSpeed;
 
 		this.anchor.setTo(0.5);
 
@@ -40,14 +41,10 @@ class Character extends Phaser.Sprite {
 			this.body.velocity.x = 0;
 			this.body.velocity.y = 0;
 
-			if(this.timerBomb != 0){
-				this.timerBomb--;
-			}
-
 			if (cursors.left.isDown)
 			{
 				//  Move to the left
-				this.body.velocity.x = -150;
+				this.body.velocity.x = -this.speed;
 
 				this.animations.play('left');
 				move = true;
@@ -55,7 +52,7 @@ class Character extends Phaser.Sprite {
 			else if (cursors.right.isDown)
 			{
 				//  Move to the right
-				this.body.velocity.x = 150;
+				this.body.velocity.x = this.speed;
 
 				this.animations.play('right');
 				move = true;
@@ -64,7 +61,7 @@ class Character extends Phaser.Sprite {
 			if (cursors.down.isDown)
 			{
 				//  Move to the right
-				this.body.velocity.y = 150;
+				this.body.velocity.y = this.speed;
 
 				if(!move){this.animations.play('down');}
 				move = true;
@@ -72,7 +69,7 @@ class Character extends Phaser.Sprite {
 			else if (cursors.up.isDown)
 			{
 				//  Move to the right
-				this.body.velocity.y = -150;
+				this.body.velocity.y = -this.speed;
 
 				if(!move){this.animations.play('up');}
 				move = true;
@@ -87,11 +84,11 @@ class Character extends Phaser.Sprite {
 				this.frame = 1;
 			}
 
-			if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.bombPosed < this.maxBombs && this.timerBomb == 0)
+			if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.bombPosed < this.maxBombs)
 			{
-				this.bombs.addBomb(this.x, this.y, this.range, this);
-				this.timerBomb = 60;
-				this.bombPosed++;
+				if(this.bombs.addBomb(this.x, this.y, this.range, this)){
+					this.bombPosed++;
+				}
 			}
 		}
 	}
@@ -111,6 +108,10 @@ class Character extends Phaser.Sprite {
 
 	raiseRange(){
 		this.range++;
+	}
+
+	raiseSpeed(){
+		this.speed += 0.1 * this.game.initialSpeed;
 	}
 
 	raiseBombCapacity(){

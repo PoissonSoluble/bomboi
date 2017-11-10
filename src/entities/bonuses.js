@@ -10,10 +10,12 @@ class Bonuses extends Phaser.Group{
 		if(s < this.game.bonusDropRate){
 			s = Math.random();
 			let bonus;
-			if(s < 0.5){
+			if(s < 0.33){
 			 	bonus = new BonusFire(this.game, x, y);
-			}else{
+			}else if(s < 0.66){
 				bonus = new BonusBomb(this.game, x, y);
+			}else{
+				bonus = new BonusSpeed(this.game, x, y);
 			}
 			this.add(bonus);
 		}

@@ -4,7 +4,9 @@ class ExplosionSprite extends Phaser.Sprite {
 
 		this.game = game;
 
-		this.game.physics.enable(this, Phaser.Physics.ARCADE)
+		this.game.physics.arcade.enable(this);
+
+		this.body.setSize(21,21,2,2);
 
 		this.anchor.setTo(0.5, 0.5);
 		this.x = x; 
