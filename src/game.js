@@ -11,6 +11,8 @@ class Game extends Phaser.Game {
 
         this.level = level1;
 
+        this.bonusDropRate = 0.25;
+
         this.state.add('boot', BootState, true);
         this.state.add('load', LoadState, false);
         this.state.add('play', PlayState, false);

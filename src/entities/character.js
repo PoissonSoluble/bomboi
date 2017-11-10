@@ -19,10 +19,10 @@ class Character extends Phaser.Sprite {
 		this.x = 150; 
 		this.y = 150; 
 
-        this.anchor.setTo(0.5, 0.5);
+		this.anchor.setTo(0.5);
 
-        this.range = 1;
-        this.maxBombs = 1;
+		this.range = 1;
+		this.maxBombs = 1;
 
 		this.animations.add('down', [0, 1, 2, 3], 10, true);
 		this.animations.add('left', [8, 9, 10, 11], 10, true);
@@ -34,7 +34,8 @@ class Character extends Phaser.Sprite {
 
 	update(){
 		if(!this.dead){
-			var cursors = this.game.input.keyboard.createCursorKeys();
+			let cursors = this.game.input.keyboard.createCursorKeys();
+			let move = false;
 			//  Reset the thiss velocity (movement)
 			this.body.velocity.x = 0;
 			this.body.velocity.y = 0;
@@ -49,6 +50,7 @@ class Character extends Phaser.Sprite {
 				this.body.velocity.x = -150;
 
 				this.animations.play('left');
+				move = true;
 			}
 			else if (cursors.right.isDown)
 			{
@@ -56,22 +58,28 @@ class Character extends Phaser.Sprite {
 				this.body.velocity.x = 150;
 
 				this.animations.play('right');
+				move = true;
 			}
-			else if (cursors.down.isDown)
+
+			if (cursors.down.isDown)
 			{
 				//  Move to the right
 				this.body.velocity.y = 150;
 
-				this.animations.play('down');
+				if(!move){this.animations.play('down');}
+				move = true;
 			}
 			else if (cursors.up.isDown)
 			{
 				//  Move to the right
 				this.body.velocity.y = -150;
 
-				this.animations.play('up');
+				if(!move){this.animations.play('up');}
+				move = true;
 			}
-			else
+
+
+			if(!move)
 			{
 				//  Stand still
 				this.animations.stop();
@@ -82,7 +90,7 @@ class Character extends Phaser.Sprite {
 			if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.bombPosed < this.maxBombs && this.timerBomb == 0)
 			{
 				this.bombs.addBomb(this.x, this.y, this.range, this);
-				this.timerBomb = 120;
+				this.timerBomb = 60;
 				this.bombPosed++;
 			}
 		}
@@ -99,5 +107,13 @@ class Character extends Phaser.Sprite {
 
 	freeBomb(){
 		this.bombPosed--;
+	}
+
+	raiseRange(){
+		this.range++;
+	}
+
+	raiseBombCapacity(){
+		this.maxBombs++;
 	}
 }

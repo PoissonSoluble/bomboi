@@ -13,6 +13,9 @@ class LoadState extends Phaser.State {
 		this.game.load.image("floor", "assets/floor.jpg");
 		this.game.load.image("boulder", "assets/boulder.png");
 		this.game.load.image("bomb", "assets/bomb.png");
+		this.game.load.image("boulder", "assets/boulder.png");
+		this.game.load.image("bonus_bomb", "assets/bonus_bomb.png");
+		this.game.load.image("bonus_fire", "assets/bonus_fire.png");
 		this.game.load.spritesheet('character', 'assets/dude.png', 70, 87.5);
 		this.game.load.spritesheet('explosion', 'assets/explosion.png', 25, 25);
 
