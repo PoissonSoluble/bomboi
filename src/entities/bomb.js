@@ -16,7 +16,7 @@ class Bomb extends Phaser.Sprite {
 		this.x = x; 
 		this.y = y; 
 
-		let tw = this.game.add.tween(this.scale).to({x: 1.2, y:1.2}, this.game.rnd.integerInRange(1000,2000), 'Linear', true, 0, -1, true);
+		let tw = this.game.add.tween(this.scale).to({x: 1.2, y:1.2}, 500, 'Linear', true, 0, -1, true);
 
 		this.game.add.existing(this);
 
