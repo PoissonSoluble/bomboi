@@ -1,3 +1,5 @@
+let bonusDropRate = 0.25;
+
 class Bonuses extends Phaser.Group{
 	constructor(game){
 		super(game);
@@ -7,7 +9,7 @@ class Bonuses extends Phaser.Group{
 
 	generateBonus(x, y){
 		let s = Math.random();
-		if(s < this.game.bonusDropRate){
+		if(s < bonusDropRate){
 			s = Math.random();
 			let bonus;
 			if(s < 0.33){

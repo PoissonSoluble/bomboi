@@ -15,8 +15,8 @@ class Walls extends Phaser.Group {
 					let x = (this.game.level.tilesize * i) + (this.game.level.tilesize / 2);
 					let y = (this.game.level.tilesize * j) + (this.game.level.tilesize / 2);
 					let wall = new Phaser.Sprite(this.game, x, y,'wall');
-					wall.anchor.setTo(0.5)
-					this.game.physics.enable(wall, Phaser.Physics.ARCADE)
+					wall.anchor.setTo(0.5);
+					this.game.physics.arcade.enable(wall);
 					wall.body.immovable = true;
 					this.add(wall);
 

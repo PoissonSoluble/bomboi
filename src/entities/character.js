@@ -1,7 +1,10 @@
+let initialSpeed = 150;
+let speedIncreaseRate = 0.2;
+
 class Character extends Phaser.Sprite {
 
-	constructor(game, player, bombs) {
-		super(game,  0, 0, "character");
+	constructor(game, player, bombs, input) {
+		super(game,  0, 0, "character" + player);
 
 		this.game = game;
 
@@ -10,15 +13,16 @@ class Character extends Phaser.Sprite {
 		this.bombPosed = 0;
 
 		this.player = player;
+		this.input = input;
 		this.bombs = bombs;
 
 		this.game.physics.arcade.enable(this);
 		this.body.setSize(66,81.5,1,3);
 
-		this.x = 150; 
-		this.y = 150; 
+		this.x = this.game.level.starts[player-1].x; 
+		this.y = this.game.level.starts[player-1].y; 
 
-		this.speed = this.game.initialSpeed;
+		this.speed = initialSpeed;
 
 		this.anchor.setTo(0.5);
 
@@ -35,13 +39,13 @@ class Character extends Phaser.Sprite {
 
 	update(){
 		if(!this.dead){
-			let cursors = this.game.input.keyboard.createCursorKeys();
+			let keyboard = this.game.input.keyboard;
 			let move = false;
 			//  Reset the thiss velocity (movement)
 			this.body.velocity.x = 0;
 			this.body.velocity.y = 0;
 
-			if (cursors.left.isDown)
+			if (keyboard.isDown(this.input.left))
 			{
 				//  Move to the left
 				this.body.velocity.x = -this.speed;
@@ -49,7 +53,7 @@ class Character extends Phaser.Sprite {
 				this.animations.play('left');
 				move = true;
 			}
-			else if (cursors.right.isDown)
+			else if (keyboard.isDown(this.input.right))
 			{
 				//  Move to the right
 				this.body.velocity.x = this.speed;
@@ -58,7 +62,7 @@ class Character extends Phaser.Sprite {
 				move = true;
 			}
 
-			if (cursors.down.isDown)
+			if (keyboard.isDown(this.input.down))
 			{
 				//  Move to the right
 				this.body.velocity.y = this.speed;
@@ -66,7 +70,7 @@ class Character extends Phaser.Sprite {
 				if(!move){this.animations.play('down');}
 				move = true;
 			}
-			else if (cursors.up.isDown)
+			else if (keyboard.isDown(this.input.up))
 			{
 				//  Move to the right
 				this.body.velocity.y = -this.speed;
@@ -74,7 +78,6 @@ class Character extends Phaser.Sprite {
 				if(!move){this.animations.play('up');}
 				move = true;
 			}
-
 
 			if(!move)
 			{
@@ -84,7 +87,7 @@ class Character extends Phaser.Sprite {
 				this.frame = 1;
 			}
 
-			if(this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR) && this.bombPosed < this.maxBombs)
+			if(keyboard.isDown(this.input.bomb) && this.bombPosed < this.maxBombs)
 			{
 				if(this.bombs.addBomb(this.x, this.y, this.range, this)){
 					this.bombPosed++;
@@ -111,7 +114,7 @@ class Character extends Phaser.Sprite {
 	}
 
 	raiseSpeed(){
-		this.speed += 0.1 * this.game.initialSpeed;
+		this.speed += speedIncreaseRate * initialSpeed;
 	}
 
 	raiseBombCapacity(){

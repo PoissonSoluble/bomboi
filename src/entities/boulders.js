@@ -1,9 +1,5 @@
 class Boulders extends Phaser.Group {
 
-	isCorner(i,j){
-		return ((i <= 2 || i >= 16) && j == 1) || (i == 1 && (j <= 2|| j >= 16)) || (i == 17 && (j <= 2|| j >= 16)) || ((i <= 2 || i >= 16) && j == 17)
-	}
-
 	constructor(game, walls, floor) {
 		super(game);
 		this.game = game;
@@ -21,7 +17,7 @@ class Boulders extends Phaser.Group {
 
 						let boulder = new Phaser.Sprite(this.game, x, y, 'boulder');
 						boulder.anchor.setTo(0.5);
-						this.game.physics.enable(boulder, Phaser.Physics.ARCADE)
+						this.game.physics.arcade.enable(boulder);
 						boulder.body.immovable = true;
 						this.add(boulder);
 
