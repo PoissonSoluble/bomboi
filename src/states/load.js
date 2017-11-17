@@ -2,13 +2,16 @@ class LoadState extends Phaser.State {
 
 	preload() {
 
-		this.game.stage.backgroundColor = '#87e33a';
+		this.game.stage.backgroundColor = '#ffffff';
+		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		let logo = this.game.add.sprite((Game.SIZE * 100)/2, (Game.SIZE * 100)/2, 'logo');
+		logo.anchor.setTo(0.5);
+		logo.scale.setTo(2);
+
 		this.loaded = false;
 
 		this.interval = setInterval(LoadState.prototype.checkIfLoaded.bind(this), 500);
 
-		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		//this.scale.setGameSize(window.innerWidth, window.innerHeight);
 		this.game.load.image("wall", "assets/wall.png");
 		this.game.load.image("floor", "assets/floor.jpg");
 		this.game.load.image("boulder", "assets/boulder.png");
